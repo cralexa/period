@@ -1,0 +1,24 @@
+<link rel="stylesheet" href="/css/card.css">
+<link rel="stylesheet" href="/css/grid.css">
+
+<h1 class="Cal-head"></h1>
+<div id="arrow">
+  <a href="/calendar/prev" id="arrow-P"><i class="fas fa-arrow-alt-circle-left"></i></a>
+  <a href="/calendar/next" id="arrow-N"><i class="fas fa-arrow-alt-circle-right"></i></a>
+</div>
+
+<section class="basic-grid">
+  <li>Sunday</li>
+  <li>Monday</li>
+  <li>Tuesday</li>
+  <li>Wednesday</li>
+  <li>Thursday</li>
+  <li>Friday</li>
+  <li>Saturday</li>
+</section>
+<section class="basic-grid" id="box"> </section>
+<script type="text/javascript">
+var monthIndex = '{{monthIndex}}';
+    monthIndex = parseInt(monthIndex);
+</script>
+<script src="/js/buildCalendar.js" charset="utf-8"></script>
