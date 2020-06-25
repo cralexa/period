@@ -1,1 +1,24 @@
-<p>{{data.fname}} {{data.lname}} is Cool</p>
+<p>{{name.fname}} {{name.lname}}'s Cool Awesome Project</p>
+
+{{#if Data }}
+<p>MySQL DataBase:</p>
+
+  <script type="text/javascript">
+
+  {{#each Data}}
+    var i = "{{this.lat}}";
+    var j = "{{this.lng}}";
+    var j = "{{this.name}}";
+    var j = "{{this.name}}";
+    document.write( '<li> name: '+i+", address: "+j+'</li>');
+  {{/each}}
+
+  </script>
+{{/if}}
+
+lat: body.lat,
+lng: body.lng,
+name: body.name,
+describe: body.describe,
+submission: body.submission,
+time_slot: body.time_slot

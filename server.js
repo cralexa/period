@@ -1,11 +1,39 @@
 var express = require('express');
-const path = require('path');
+var path = require('path');
 var exphbs = require('express-handlebars');
-//var lessMiddleware = require('less-middleware');
-
+var mysql = require('mysql');
 var app = express();
 
-var server = app.listen(8080,listening);
+const PORT = 8080;
+
+//form data modules
+const bodyParser = require("body-parser");
+var multer = require('multer');
+var upload = multer();
+
+// for parsing application/json
+app.use(bodyParser.json());
+// for parsing application/xwww-
+app.use(bodyParser.urlencoded({ extended: true }));
+//form-urlencoded
+// for parsing multipart/form-data
+app.use(upload.array());
+
+var connection = mysql.createConnection({
+  host: 'localhost',
+  user: 'caleb',
+  password: '',
+  database: 'MapBoxDB'
+});
+
+connection.connect(function(err) {
+  if (err) {
+    return console.error('error: ' + err.message);
+  }
+  console.log('Connected to MapBoxDB.');
+});
+
+var server = app.listen(PORT,listening);
 function listening() {
   console.log("server is listening...");
 }
@@ -15,43 +43,71 @@ app.engine('.hbs',exphbs({defaultLayout:'index',extname:'.hbs'}));
 app.set('view ',path.join(__dirname,'views'));
 app.set('view engine','.hbs');
 
-//app.use(lessMiddleware(path.join(__dirname, 'static')));
 
 app.use(express.static(path.join(__dirname, 'node_modules/@fortawesome/fontawesome-free')));
 app.use(express.static(path.join(__dirname, 'static')));
 app.use(express.static(path.join(__dirname, 'static/js')));
 
 
-
-/*
-var indexRouter = require('./routes/home');
-var aboutRouter = require('./routes/about');
-var calendarRouter = require('./routes/calendar');
-
-
-app.use('/', indexRouter);
-app.use('/about', aboutRouter);
-app.use('/calendar', calendarRouter);
-app.use('/calendar/:back', calendarRouter);
-*/
-
 //Home Route
 app.get('/',home);
 function home(req,res) {
-  var data = {fname:"Caleb",lname:"Alexander",age:22}
+  var name = {fname:"Caleb",lname:"Alexander",age:22}
   //home refers to home.handlebars
-  res.render('home',{title:"Period Thing",data:data});
+  res.render('home',{title:"Period Thing",name:name});
 
 }
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 //map Route
-app.get('/map',map);
-function map(req,res) {
-  var data = {fname:"Caleb",lname:"Alexander",age:22}
-  //map refers to map.handlebars
-  res.render('map',{title:"Period Thing",pageName:"map",data:data});
+app.get('/map',function(req,res) {
+    //map refers to map.handlebars
+  res.render('map',{title:"Period Thing",pageName:"map"});
 
-}
+});
+
+app.post('/SetMarker', function(req, res){
+
+  /* Get data from form */
+   var body = req.body;
+    var res_body = {
+     lat: body.lat,
+     lng: body.lng,
+     name: body.name,
+     describe: body.describe,
+     submission: body.submission,
+     time_slot: body.time_slot
+   };
+
+   // Put data in to database
+   connection.query("INSERT INTO MapData SET ?",res_body, function (err, result) {
+     if (err) throw err;
+     console.log("1 record inserted");
+   });
+
+   res.redirect('/mapdata');
+
+
+});
+
+app.get('/mapdata',function(req,res) {
+  var Data = [];
+   connection.query("SELECT * FROM MapData", function (err, result, fields) {
+    if (err) {
+       console.log('error: ' + err.message);
+       return null;
+    }
+    for (var i = 0; i < result.length; i++) {
+        Data.push(result[i]);
+    }
+    res.render('home',{Data:Data,lenght:Data.length});
+  });
+});
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 var date = new Date();
 
@@ -76,21 +132,3 @@ function calendar_B(req,res) {
   res.render('calendar',{title:"Period Thing",monthIndex:dd});
 
 }
-
-/*
-app.get('/calendar/:month',calendar_B);
-function calendar_B(req,res) {
-  //calendar refers to calendar.handlebars
-  var data = req.params;
-  var months = ["January","Febuary","March","April","May","June","July","August","September","October","November","December"];
-  var monthIndex = -1;
-  for(var i=0;i<11;i++){
-    var mm = months[i].slice(0,3);
-    if(mm==data.month){
-      monthIndex = i;
-    }
-  }
-  res.render('calendar',{title:"Period Thing",monthIndex:monthIndex});
-
-}
-*/

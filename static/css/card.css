@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Noto+Sans&display=swap');
 :root{
   --color:#fff;
-  
+
 }
 body {
     background: var();
@@ -46,10 +46,6 @@ li{
   border-style: solid;
   background: var(--monthColor);
   flex: auto;
-}
-
-i {
-  color: var(--monthColor);
 }
 
 #day{

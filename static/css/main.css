@@ -4,13 +4,15 @@
   --text-primary: #b6b6b6;
   --text-secondary: #ececec;
   --bg-primary: #23232e;
-  --bg-secondary: #141418;
+  --bg-secondary: #525252;
+  --monthColor: #6649b8;
+/*--------------------------*/
   --transition-speed: 600ms;
 }
 
 body {
   color: var(--text-primary);
-  background-color: var(--bg-secondary);
+  background-color: var(--bg-primary);
   margin: 0;
   padding: 0;
 }
@@ -20,11 +22,11 @@ body::-webkit-scrollbar {
 }
 
 body::-webkit-scrollbar-track {
-  background: #1e1e24;
+  background: var(--bg-primary);
 }
 
 body::-webkit-scrollbar-thumb {
-  background: #6649b8;
+  background: var(--monthColor);
 }
 
 main {
@@ -32,9 +34,13 @@ main {
   padding: 1rem;
 }
 
+i {
+  color: var(--monthColor);
+}
+
 .navbar {
   position: fixed;
-  background-color: var(--bg-primary);
+  background-color: var(--bg-secondary);
   transition: width 600ms ease;
 }
 

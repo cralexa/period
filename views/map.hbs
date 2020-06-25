@@ -1,11 +1,24 @@
 <script src='https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.js'></script>
-<link href='https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.css' rel='stylesheet' />
-<p>{{data.fname}} {{data.lname}} is {{data.age}} years old</p>
+<link rel="stylesheet" href="/css/map.css">
+<link href='https://api.mapbox.com/mapbox-gl-js/v1.8.1/mapbox-gl.css' rel='stylesheet'>
 
-<div style="display:flex;">
-  <div id='map' style='width: 400px; height: 300px; margin-right: auto;'></div>
+<div id="MapContainer">
+  <div id='map'></div>
 </div>
 
+<form action="/SetMarker" method="post" id="MyMapForm">
+  <input type="hidden" name="lat" />
+  <input type="hidden" name="lng" />
+  <br><label>Name:</label>
+  <input type="text" name="name" />
+  <br><label>describe:</label>
+  <input type="text" name="describe" />
+  <br><label>submission:</label>
+  <input type="datetime-local" name="submission" />
+  <br><label>time_slot:</label>
+  <input type="datetime-local" name="time_slot" />
 
+      <button type="submit">Submit marker</button>
+</form>
 
 <script src="/js/map.js"></script>
